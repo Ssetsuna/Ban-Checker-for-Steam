@@ -1,4 +1,36 @@
-javascript:(function(){
+var currentUrl = document.location.href;
+var patternUrl = new RegExp(".*com/groups.*");
+if (patternUrl.test(currentUrl)){
+	//groups page
+	window.onhashchange = change;
+	var patternGroup = new RegExp(".*com/groups/.*/members.*");
+	if (patternGroup.test(currentUrl)){
+		// /members
+		checkbans();
+	} else {
+		// #members
+		var hash = location.hash;
+		var patternHash = new RegExp("#members.*");
+		if (patternHash.test(hash)){
+			// check bans when loaded checkbans();
+		}
+	}
+} else {
+	// friends page
+	checkbans();
+}
+
+function change(){
+	// #members
+	var hash = location.hash;
+	var pattern = new RegExp("#members.*");
+	if (pattern.test(hash)){
+		console.log(hash);
+		//check bans when loaded checkbans();
+	}	
+}
+
+function checkbans(){
     // Javascript does not work well with integers greater than 53 bits precision... So we need
     // to do our maths using strings.
     function getDigit(x, digitIndex) {
@@ -122,7 +154,6 @@ javascript:(function(){
 		} else {
 			greentext = data['greentext'];
 		}
-		console.log(greentext);
 		if (typeof data['customapikey'] == 'undefined'){
 			var apikey = defaultkeys[Math.floor(Math.random() * 3)];
 		}else{
@@ -134,4 +165,4 @@ javascript:(function(){
 			makeApiCall(batch, apikey);
 		} 
 	});
-})();
+};
